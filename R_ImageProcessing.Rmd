@@ -1,0 +1,61 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r echo=FALSE}
+library(magick)
+```
+
+```{r}
+
+image_stat <- image_read('./images/bioimage.jpg')
+tiger <- image_read("https://upload.wikimedia.org/wikipedia/commons/f/fd/Ghostscript_Tiger.svg")
+image_stat
+tiger
+```
+
+```{r}
+image_info(tiger)
+```
+
+Transformations
+```{r}
+image_resize(tiger, geometry = "300x")
+image_scale(tiger, geometry = "800x400")
+image_sample(tiger, geometry = "800x400") # Essentially image_info on a limited portion of the image
+image_crop(tiger, geometry = "800x400", repage = T)
+
+image_fill(tiger, "blue", "+100+200", fuzz=40)
+
+# Re-Orientation
+image_rotate(tiger, 120)
+image_flip(tiger)
+image_flop(tiger)
+image_deskew(tiger, threshold = 40)
+image_orient(tiger, orientation = NULL) # I haven't figured this one out yet
+```
+
+
+```{r}
+image_write(tiger, path="./images/tiger.png", format="png")
+```
+
+
+## Animated gifs
+```{r}
+image_gif <- image_read('./images/nonose.gif')
+image_gif
+```
+
+```{r}
+head(image_gif)
+```
+```{r}
+distracted <- image_flop(image_gif) %>% image_annotate("My kids when I am trying \n to concentrate", size=18, location=geometry_point(5, 120), color="white")
+
+```
+```{r}
+image_write(distracted, path="./images/distracted.gif", format="gif")
+```
+
